@@ -1,0 +1,10 @@
+{
+  "actorSpecification": 1,
+  "name": "esb-odds-1xbet",
+  "title": "ESB Odds - 1xBet",
+  "description": "Scrape esports match odds from 1xBet LineFeed API",
+  "version": "1.0",
+  "buildTag": "latest",
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile"
+}
