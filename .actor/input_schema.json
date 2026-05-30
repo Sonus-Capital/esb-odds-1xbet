@@ -6,6 +6,7 @@
     "maxMatches": {
       "title": "Max matches",
       "type": "integer",
+      "description": "Maximum number of match records to return",
       "default": 500
     }
   },
