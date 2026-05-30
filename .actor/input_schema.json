@@ -3,15 +3,10 @@
   "type": "object",
   "schemaVersion": 1,
   "properties": {
-    "proxyConfiguration": {
-      "title": "Proxy configuration",
-      "type": "object",
-      "default": {"useApifyProxy": true, "apifyProxyGroups": ["RESIDENTIAL"]}
-    },
     "maxMatches": {
       "title": "Max matches",
       "type": "integer",
-      "default": 200
+      "default": 500
     }
   },
   "required": []
