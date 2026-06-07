@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
 """
-1xBet Esports Odds Scraper — v1 (2026-05-30)
+1xBet Esports Odds Scraper — v1.1 (2026-06-07)
+
+Schema: SCHEMA-LOCK-2026-06-07.md — all actors must conform.
+Changes in v1.1:
+  - Added `game` field (canonical name via normalise_game)
 
 Flow:
   1. Playwright opens 1xbet.com/en/esports, waits 12s for CF JS + page hydration
-  2. All API calls made via page.evaluate(fetch...) — uses browser's live session/cookies
+  2. API calls via page.evaluate(fetch...) — uses browser's live session/cookies
   3. cyber-api leftmenu → subSport IDs → gamesBySport per subSport (prematch + live)
   4. Extract Match Winner odds, push to dataset
-
-Data structure:
-  games[].opponent1.fullName / opponent2.fullName = teams
-  games[].liga.name = tournament
-  games[].subSport.name = game (CS 2, Dota 2, Valorant, etc.)
-  games[].startTime = ISO start time
-  games[].eventGroups[0].events = [[{type:1,cf:1.55}],[{type:3,cf:2.39}]]
-    type 1=team1 win, type 3=team2 win, type 2=draw
 """
 import asyncio
 import json
+import logging
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 from apify import Actor
 from playwright.async_api import async_playwright
+from normalise import normalise_game
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("1xbet-scraper")
 
 BASE_URL = "https://1xbet.com"
 PARAMS = "cfView=3&fcountry=12&gr=285&lng=en&ref=1"
@@ -63,6 +64,7 @@ def extract_record(game: dict, sport_name: str, now: str) -> Optional[Dict]:
     return {
         "bookmaker": "1xbet",
         "game_raw": sport_name,
+        "game": normalise_game(sport_name),
         "tournament_name": liga,
         "team1": team1,
         "team2": team2,
@@ -82,7 +84,7 @@ async def main() -> None:
         seen: set = set()
         all_records: List[Dict] = []
 
-        actor.log.info("1xBet esports scraper v1 | Playwright + cyber-api")
+        actor.log.info("1xBet esports scraper v1.1 | Playwright + cyber-api")
 
         async with async_playwright() as pw:
             browser = await pw.chromium.launch(
@@ -110,11 +112,9 @@ async def main() -> None:
             actor.log.info("Loading 1xbet.com/en/esports ...")
             await page.goto(f"{BASE_URL}/en/esports", wait_until="domcontentloaded", timeout=30000)
 
-            # Wait for CF JS challenge + page hydration
             actor.log.info("Waiting for CF challenge + page hydration (12s)...")
             await asyncio.sleep(12)
 
-            # Confirm page is ready
             title = await page.title()
             actor.log.info(f"Page title: {title!r}")
 
