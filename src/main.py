@@ -20,7 +20,7 @@ from typing import Dict, List, Optional
 
 from apify import Actor
 from playwright.async_api import async_playwright
-from normalise import normalise_game
+from src.normalise import normalise_game
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("1xbet-scraper")
