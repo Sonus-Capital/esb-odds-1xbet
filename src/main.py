@@ -37,8 +37,14 @@ def extract_record(game: dict, sport_name: str, now: str) -> Optional[Dict]:
 
     liga = (game.get("liga") or {}).get("name", "")
     match_id = game.get("id", "")
-    start_time = game.get("startTime") or ""
     match_url = f"{BASE_URL}/en/esports/{match_id}" if match_id else ""
+
+    # 1xBet cyber API exposes startTs as Unix seconds UTC, not startTime.
+    start_ts = game.get("startTs")
+    if isinstance(start_ts, (int, float)) and start_ts > 1_000_000_000:
+        start_time = datetime.fromtimestamp(start_ts, tz=timezone.utc).isoformat()
+    else:
+        start_time = ""
 
     p1 = p2 = p_draw = None
     for eg in (game.get("eventGroups") or [])[:1]:
