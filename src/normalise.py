@@ -162,6 +162,22 @@ TOURNAMENT_ALIASES = {
         "arena of valor premier league": "Arena of Valor Premier League 2026",
         "premier league": "Arena of Valor Premier League 2026",
     },
+    "teamfight tactics": {
+        # 1xbet/888starz: "Teamfight Tactics. Esports World Cup"
+        # thunderpick:    "TFT at Esports World Cup 2026"
+        "esports world cup": "Esports World Cup 2026",
+        "tft at esports world cup 2026": "Esports World Cup 2026",
+        "at esports world cup 2026": "Esports World Cup 2026",
+        "esports world cup 2026": "Esports World Cup 2026",
+    },
+    "mobile legends: bang bang": {
+        # 1xbet/888starz: "Mobile Legends. Mid Season Cup"
+        # others:         "MLBB Mid Season Cup 2026"
+        "mid season cup": "MLBB Mid Season Cup 2026",
+        "mlbb mid season cup 2026": "MLBB Mid Season Cup 2026",
+        "mlbb mid season cup": "MLBB Mid Season Cup 2026",
+        "mid season cup 2026": "MLBB Mid Season Cup 2026",
+    },
 }
 
 
