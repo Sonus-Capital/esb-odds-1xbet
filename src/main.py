@@ -133,11 +133,12 @@ def extract_outright_records(game: dict, sport_name: str, now: str) -> List[Dict
                     "game": normalise_game(sport_name),
                     "tournament_name": liga,
                     "team1": player,
-                    "team2": None,
+                    "team2": "FIELD",
                     "match_start_time": start_time,
                     "match_url": match_url,
+                    "market_name": "Battle Royale Outright",
                     "price_team1": odds,
-                    "price_team2": None,
+                    "price_team2": 999.0,  # FIELD sentinel price — passes 1v1 sync filters
                     "price_draw": None,
                     "scraped_at": now,
                 })
